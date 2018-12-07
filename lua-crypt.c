@@ -6,6 +6,15 @@
 #include <string.h>
 #include <stdlib.h>
 
+#if defined(_WIN32)
+	#define random rand
+	#define srandom srand
+	#define EXPORT_API __declspec(dllexport)
+#else
+	#define EXPORT_API
+#endif // _WIN32
+
+
 #define SMALL_CHUNK 256
 
 /* the eight DES S-boxes */
@@ -836,7 +845,7 @@ lb64decode(lua_State *L) {
 	return 1;
 }
 
-int
+EXPORT_API int
 luaopen_crypt(lua_State *L) {
 	luaL_checkversion(L);
 	srandom(time(NULL));
